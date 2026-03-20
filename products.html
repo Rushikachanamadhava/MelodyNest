@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products – MelodyNest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream:#f9f5ef; --ivory:#fdf8f2; --warm-white:#fffdf9;
+      --beige:#e8ddd0; --gold:#b89a6a; --gold-light:#d4b896;
+      --gold-dark:#8a6f45; --brown:#5c4a35; --charcoal:#2c2c2c;
+      --text-muted:#7a6e63; --shadow:rgba(90,70,45,0.12);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Jost',sans-serif; background:var(--ivory); color:var(--charcoal); }
+
+    nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(253,248,242,0.97); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--beige);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 5vw; height:72px; box-shadow:0 2px 16px var(--shadow);
+    }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; color:var(--brown); text-decoration:none; }
+    .nav-logo span { color:var(--gold); }
+    .nav-links { display:flex; gap:2.2rem; list-style:none; align-items:center; }
+    .nav-links a { text-decoration:none; font-size:0.82rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); font-weight:500; transition:color 0.25s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--gold-dark); }
+    .nav-icons { display:flex; gap:1.4rem; align-items:center; }
+    .nav-icon { text-decoration:none; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-weight:500; display:flex; align-items:center; gap:0.4rem; transition:color 0.25s; }
+    .nav-icon:hover { color:var(--gold-dark); }
+    .badge { background:var(--gold); color:#fff; border-radius:50%; width:18px; height:18px; font-size:0.65rem; display:flex; align-items:center; justify-content:center; font-weight:600; }
+
+    /* PAGE HERO */
+    .page-hero {
+      background:linear-gradient(135deg, var(--beige) 0%, var(--cream) 60%);
+      padding:5rem 5vw 4rem; text-align:center;
+      border-bottom:1px solid var(--beige);
+    }
+    .page-hero p { font-size:0.7rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:0.8rem; }
+    .page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,5vw,3.5rem); font-weight:300; color:var(--brown); }
+    .page-hero h1 em { font-style:italic; }
+
+    /* MAIN LAYOUT */
+    .shop-layout { display:grid; grid-template-columns:240px 1fr; gap:3rem; padding:3rem 5vw 5rem; max-width:1400px; margin:0 auto; }
+
+    /* SIDEBAR */
+    .sidebar {}
+    .sidebar-block { margin-bottom:2.5rem; }
+    .sidebar-title { font-size:0.68rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem; border-bottom:1px solid var(--beige); padding-bottom:0.6rem; }
+    .filter-list { list-style:none; }
+    .filter-list li { margin-bottom:0.5rem; }
+    .filter-list li label { display:flex; align-items:center; gap:0.6rem; font-size:0.83rem; color:var(--text-muted); cursor:pointer; transition:color 0.2s; }
+    .filter-list li label:hover { color:var(--gold-dark); }
+    .filter-list input[type=checkbox] { accent-color:var(--gold); width:14px; height:14px; }
+    .price-range input { width:100%; accent-color:var(--gold); }
+    .price-labels { display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem; }
+    .btn-apply { background:var(--gold); color:#fff; border:none; padding:0.6rem 1.4rem; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; font-family:'Jost',sans-serif; transition:background 0.25s; margin-top:1rem; width:100%; }
+    .btn-apply:hover { background:var(--gold-dark); }
+    .btn-clear { background:transparent; color:var(--text-muted); border:1px solid var(--beige); padding:0.5rem 1.4rem; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; font-family:'Jost',sans-serif; transition:all 0.25s; margin-top:0.5rem; width:100%; }
+    .btn-clear:hover { border-color:var(--gold); color:var(--gold-dark); }
+
+    /* PRODUCTS AREA */
+    .products-area {}
+    .products-toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
+    .search-wrap { position:relative; }
+    .search-wrap input {
+      padding:0.7rem 1.2rem 0.7rem 2.8rem; border:1px solid var(--beige); background:var(--warm-white);
+      font-family:'Jost',sans-serif; font-size:0.83rem; color:var(--charcoal); width:280px;
+      outline:none; transition:border-color 0.25s;
+    }
+    .search-wrap input:focus { border-color:var(--gold); }
+    .search-wrap svg { position:absolute; left:0.9rem; top:50%; transform:translateY(-50%); color:var(--text-muted); }
+    .sort-select { padding:0.7rem 1rem; border:1px solid var(--beige); background:var(--warm-white); font-family:'Jost',sans-serif; font-size:0.82rem; color:var(--charcoal); cursor:pointer; outline:none; }
+    .results-count { font-size:0.82rem; color:var(--text-muted); }
+
+    /* PRODUCT GRID */
+    .product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:2rem; }
+    .product-card { background:var(--warm-white); border:1px solid var(--beige); transition:box-shadow 0.3s,transform 0.3s; overflow:hidden; }
+    .product-card:hover { box-shadow:0 12px 40px var(--shadow); transform:translateY(-4px); }
+    .card-img-wrap { position:relative; overflow:hidden; aspect-ratio:4/3; }
+    .card-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s; }
+    .product-card:hover .card-img-wrap img { transform:scale(1.05); }
+    .card-badge { position:absolute; top:12px; left:12px; background:var(--gold); color:#fff; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; padding:0.3rem 0.7rem; }
+    .card-body { padding:1.4rem 1.6rem 1.6rem; }
+    .card-category { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem; }
+    .card-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; color:var(--brown); margin-bottom:0.5rem; }
+    .card-desc { font-size:0.8rem; color:var(--text-muted); line-height:1.6; margin-bottom:0.9rem; }
+    .card-stars { color:var(--gold); font-size:0.8rem; margin-bottom:0.8rem; }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; }
+    .card-price { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:600; color:var(--brown); }
+    .card-btns { display:flex; gap:0.5rem; }
+    .btn-cart { background:var(--gold); color:#fff; border:none; padding:0.5rem 1rem; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:background 0.25s; font-family:'Jost',sans-serif; font-weight:500; }
+    .btn-cart:hover { background:var(--gold-dark); }
+    .btn-wish { background:transparent; color:var(--gold); border:1.5px solid var(--gold-light); padding:0.5rem 0.75rem; font-size:0.9rem; cursor:pointer; transition:all 0.25s; line-height:1; }
+    .btn-wish:hover { background:var(--gold); color:#fff; }
+
+    /* EMPTY */
+    .empty-msg { text-align:center; padding:4rem 2rem; color:var(--text-muted); font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-style:italic; }
+
+    /* FOOTER */
+    footer { background:var(--charcoal); color:rgba(249,245,239,0.7); padding:3rem 5vw 2rem; }
+    .footer-bottom { display:flex; justify-content:space-between; font-size:0.75rem; color:rgba(249,245,239,0.35); flex-wrap:wrap; gap:1rem; }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:2rem; right:2rem; z-index:999; background:var(--brown); color:var(--cream); padding:1rem 1.6rem; font-size:0.82rem; box-shadow:0 8px 30px rgba(0,0,0,0.2); transform:translateX(120%); transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); border-left:3px solid var(--gold); }
+    .toast.show { transform:translateX(0); }
+
+    @media(max-width:860px){
+      .shop-layout { grid-template-columns:1fr; }
+      .sidebar { display:flex; flex-wrap:wrap; gap:2rem; }
+      .sidebar-block { margin-bottom:0; flex:1; min-width:180px; }
+    }
+    @media(max-width:600px){
+      .nav-links,.nav-icons { display:none; }
+      .search-wrap input { width:200px; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Melody<span>Nest</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html" class="active">Products</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li><a href="wishlist.html">Wishlist</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-icons">
+    <a href="cart.html" class="nav-icon">🛒 <span class="badge" id="cartBadge">0</span></a>
+    <a href="wishlist.html" class="nav-icon">♡ <span class="badge" id="wishBadge">0</span></a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p>MelodyNest Collection</p>
+  <h1>Our <em>Instruments</em></h1>
+</div>
+
+<div class="shop-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <p class="sidebar-title">Categories</p>
+      <ul class="filter-list" id="catFilters">
+        <li><label><input type="checkbox" value="String" checked onchange="applyFilters()"> String Instruments</label></li>
+        <li><label><input type="checkbox" value="Keyboard" checked onchange="applyFilters()"> Keyboards</label></li>
+        <li><label><input type="checkbox" value="Percussion" checked onchange="applyFilters()"> Percussion</label></li>
+        <li><label><input type="checkbox" value="Wind" checked onchange="applyFilters()"> Wind Instruments</label></li>
+      </ul>
+    </div>
+    <div class="sidebar-block">
+      <p class="sidebar-title">Price Range</p>
+      <div class="price-range">
+        <input type="range" min="0" max="100000" step="500" id="priceRange" value="100000" oninput="updatePrice(this.value)"/>
+        <div class="price-labels"><span>₹0</span><span id="priceLabel">₹1,00,000</span></div>
+      </div>
+      <button class="btn-apply" onclick="applyFilters()">Apply Filters</button>
+      <button class="btn-clear" onclick="clearFilters()">Clear All</button>
+    </div>
+    <div class="sidebar-block">
+      <p class="sidebar-title">Rating</p>
+      <ul class="filter-list">
+        <li><label><input type="radio" name="rating" value="0" checked onchange="applyFilters()"> All Ratings</label></li>
+        <li><label><input type="radio" name="rating" value="4" onchange="applyFilters()"> ★★★★ & above</label></li>
+        <li><label><input type="radio" name="rating" value="5" onchange="applyFilters()"> ★★★★★ Only</label></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- PRODUCTS AREA -->
+  <div class="products-area">
+    <div class="products-toolbar">
+      <div class="search-wrap">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search instruments…" oninput="applyFilters()"/>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem">
+        <span class="results-count" id="resultsCount"></span>
+        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+          <option value="default">Sort by</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <p class="empty-msg" id="emptyMsg" style="display:none">No instruments found. Try adjusting your filters.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2025 MelodyNest. All rights reserved.</span>
+    <a href="index.html" style="color:var(--gold-light);text-decoration:none;">← Back to Home</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const allProducts = [
+    { id:1, name:'Classic Acoustic Guitar', cat:'String', desc:'Sitka spruce top with rosewood back and sides. Rich, warm projection ideal for folk, country, and fingerpicking styles.', price:18500, rating:5, badge:'Bestseller', img:'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&q=80' },
+    { id:2, name:'Electric Guitar', cat:'String', desc:'Solid alder body with maple neck and rosewood fretboard. Brilliant sustain, smooth playability.', price:24000, rating:5, badge:'New', img:'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?w=600&q=80' },
+    { id:3, name:'Grand Keyboard Piano', cat:'Keyboard', desc:'88 fully weighted keys with graded hammer action. Studio-grade sound engine with 700+ tones.', price:42000, rating:4, badge:'Premium', img:'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=600&q=80' },
+    { id:4, name:'Concert Violin', cat:'String', desc:'Hand-carved spruce top and maple body. Warm, resonant tone perfect for orchestral and solo performance.', price:15000, rating:5, badge:null, img:'https://images.unsplash.com/photo-1612225330812-01a9c6b355ec?w=600&q=80' },
+    { id:5, name:'Professional Drum Kit', cat:'Percussion', desc:'5-piece maple shell pack with Zildjian cymbals. Powerful projection and dynamic response.', price:58000, rating:5, badge:'Popular', img:'https://images.unsplash.com/photo-1457523054379-8d03ab9a9d8b?w=600&q=80' },
+    { id:6, name:'Silver Concert Flute', cat:'Wind', desc:'925 sterling silver headjoint, closed-hole keys. Pure, crystalline tone for the discerning flutist.', price:22000, rating:4, badge:null, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80' },
+    { id:7, name:'Mahogany Ukulele', cat:'String', desc:'Solid mahogany top and body with bone nut. Warm, mellow tone with exceptional playability.', price:6500, rating:4, badge:null, img:'https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?w=600&q=80' },
+    { id:8, name:'Alto Saxophone', cat:'Wind', desc:'Lacquered brass body with engraved bell. Smooth keywork, even intonation across all registers.', price:35000, rating:5, badge:'Limited', img:'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80' },
+  ];
+
+  let maxPrice = 100000;
+
+  function updatePrice(v) {
+    maxPrice = parseInt(v);
+    document.getElementById('priceLabel').textContent = '₹' + parseInt(v).toLocaleString('en-IN');
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const checkedCats = [...document.querySelectorAll('#catFilters input:checked')].map(i=>i.value);
+    const minRating = parseInt(document.querySelector('input[name=rating]:checked').value);
+    const sort = document.getElementById('sortSelect').value;
+
+    let filtered = allProducts.filter(p => {
+      return checkedCats.includes(p.cat) &&
+        p.price <= maxPrice &&
+        p.rating >= (minRating || 0) &&
+        (p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search) || p.cat.toLowerCase().includes(search));
+    });
+
+    if(sort==='price-asc') filtered.sort((a,b)=>a.price-b.price);
+    else if(sort==='price-desc') filtered.sort((a,b)=>b.price-a.price);
+    else if(sort==='rating') filtered.sort((a,b)=>b.rating-a.rating);
+    else if(sort==='name') filtered.sort((a,b)=>a.name.localeCompare(b.name));
+
+    renderGrid(filtered);
+  }
+
+  function clearFilters() {
+    document.querySelectorAll('#catFilters input').forEach(i=>i.checked=true);
+    document.querySelector('input[name=rating][value="0"]').checked=true;
+    document.getElementById('priceRange').value=100000;
+    maxPrice=100000;
+    document.getElementById('priceLabel').textContent='₹1,00,000';
+    document.getElementById('searchInput').value='';
+    document.getElementById('sortSelect').value='default';
+    renderGrid(allProducts);
+  }
+
+  function renderGrid(list) {
+    const grid = document.getElementById('productGrid');
+    const empty = document.getElementById('emptyMsg');
+    document.getElementById('resultsCount').textContent = `${list.length} item${list.length!==1?'s':''} found`;
+    if(!list.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    grid.innerHTML = list.map(p=>`
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        ${p.badge?`<span class="card-badge">${p.badge}</span>`:''}
+      </div>
+      <div class="card-body">
+        <p class="card-category">${p.cat}</p>
+        <h3 class="card-name">${p.name}</h3>
+        <p class="card-desc">${p.desc}</p>
+        <div class="card-stars">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}</div>
+        <div class="card-footer">
+          <span class="card-price">₹${p.price.toLocaleString('en-IN')}</span>
+          <div class="card-btns">
+            <button class="btn-cart" onclick="addToCart(${p.id})">Add to Cart</button>
+            <button class="btn-wish" onclick="addToWish(${p.id})" title="Add to Wishlist">♡</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+  }
+
+  function addToCart(id) {
+    const cart = JSON.parse(localStorage.getItem('mn_cart')||'[]');
+    const idx = cart.findIndex(i=>i.id===id);
+    if(idx>=0) cart[idx].qty=(cart[idx].qty||1)+1;
+    else { const p=allProducts.find(i=>i.id===id); cart.push({...p,qty:1}); }
+    localStorage.setItem('mn_cart',JSON.stringify(cart));
+    showToast('Added to cart ✓'); updateBadges();
+  }
+  function addToWish(id) {
+    const wish = JSON.parse(localStorage.getItem('mn_wishlist')||'[]');
+    if(wish.find(i=>i.id===id)){ showToast('Already in wishlist'); return; }
+    const p=allProducts.find(i=>i.id===id); wish.push(p);
+    localStorage.setItem('mn_wishlist',JSON.stringify(wish));
+    showToast('Added to wishlist ♡'); updateBadges();
+  }
+  function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+  function updateBadges(){
+    const cart=JSON.parse(localStorage.getItem('mn_cart')||'[]');
+    const wish=JSON.parse(localStorage.getItem('mn_wishlist')||'[]');
+    document.getElementById('cartBadge').textContent=cart.reduce((a,i)=>a+(i.qty||1),0);
+    document.getElementById('wishBadge').textContent=wish.length;
+  }
+
+  renderGrid(allProducts);
+  updateBadges();
+</script>
+</body>
+</html>
