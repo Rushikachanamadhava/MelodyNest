@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart – MelodyNest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream:#f9f5ef; --ivory:#fdf8f2; --warm-white:#fffdf9;
+      --beige:#e8ddd0; --gold:#b89a6a; --gold-light:#d4b896;
+      --gold-dark:#8a6f45; --brown:#5c4a35; --charcoal:#2c2c2c;
+      --text-muted:#7a6e63; --shadow:rgba(90,70,45,0.12);
+      --danger:#c0392b;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Jost',sans-serif; background:var(--ivory); color:var(--charcoal); }
+
+    nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(253,248,242,0.97); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--beige);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 5vw; height:72px; box-shadow:0 2px 16px var(--shadow);
+    }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; color:var(--brown); text-decoration:none; }
+    .nav-logo span { color:var(--gold); }
+    .nav-links { display:flex; gap:2.2rem; list-style:none; }
+    .nav-links a { text-decoration:none; font-size:0.82rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); font-weight:500; transition:color 0.25s; }
+    .nav-links a:hover,.nav-links a.active { color:var(--gold-dark); }
+    .nav-icons { display:flex; gap:1.4rem; }
+    .nav-icon { text-decoration:none; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-weight:500; display:flex; align-items:center; gap:0.4rem; transition:color 0.25s; }
+    .nav-icon:hover { color:var(--gold-dark); }
+    .badge { background:var(--gold); color:#fff; border-radius:50%; width:18px; height:18px; font-size:0.65rem; display:flex; align-items:center; justify-content:center; font-weight:600; }
+
+    .page-hero { background:linear-gradient(135deg,var(--beige) 0%,var(--cream) 60%); padding:4rem 5vw 3rem; text-align:center; border-bottom:1px solid var(--beige); }
+    .page-hero p { font-size:0.7rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:0.8rem; }
+    .page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--brown); }
+
+    .cart-main { max-width:1200px; margin:0 auto; padding:3rem 5vw; }
+
+    /* EMPTY STATE */
+    .empty-cart { text-align:center; padding:5rem 2rem; }
+    .empty-cart .icon { font-size:4rem; margin-bottom:1.5rem; opacity:0.5; }
+    .empty-cart h2 { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; font-style:italic; color:var(--brown); margin-bottom:1rem; }
+    .empty-cart p { color:var(--text-muted); font-size:0.9rem; margin-bottom:2rem; }
+    .btn-primary { display:inline-block; padding:0.95rem 2.8rem; background:var(--gold); color:#fff; font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:500; text-decoration:none; border:none; cursor:pointer; transition:background 0.3s; font-family:'Jost',sans-serif; }
+    .btn-primary:hover { background:var(--gold-dark); }
+    .btn-outline { display:inline-block; padding:0.9rem 2.4rem; background:transparent; color:var(--brown); font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:500; text-decoration:none; border:1.5px solid var(--gold); cursor:pointer; transition:all 0.3s; font-family:'Jost',sans-serif; }
+    .btn-outline:hover { background:var(--gold); color:#fff; }
+
+    /* CART LAYOUT */
+    .cart-layout { display:grid; grid-template-columns:1fr 340px; gap:2.5rem; }
+
+    /* CART ITEMS */
+    .cart-items-section {}
+    .cart-section-title { font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem; padding-bottom:0.6rem; border-bottom:1px solid var(--beige); }
+    .cart-item {
+      display:grid; grid-template-columns:100px 1fr auto;
+      gap:1.5rem; align-items:center;
+      background:var(--warm-white); border:1px solid var(--beige);
+      padding:1.2rem; margin-bottom:1rem;
+      transition:box-shadow 0.25s;
+    }
+    .cart-item:hover { box-shadow:0 4px 20px var(--shadow); }
+    .cart-item-img { width:100px; height:80px; object-fit:cover; }
+    .cart-item-info {}
+    .cart-item-cat { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.3rem; }
+    .cart-item-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:400; color:var(--brown); margin-bottom:0.5rem; }
+    .cart-item-price { font-size:0.85rem; color:var(--text-muted); }
+    .qty-controls { display:flex; align-items:center; gap:0.7rem; margin-top:0.7rem; }
+    .qty-btn { width:30px; height:30px; background:var(--cream); border:1px solid var(--beige); cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; color:var(--brown); transition:all 0.2s; font-family:'Jost',sans-serif; }
+    .qty-btn:hover { background:var(--gold); color:#fff; border-color:var(--gold); }
+    .qty-val { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:var(--brown); min-width:20px; text-align:center; }
+    .cart-item-right { text-align:right; }
+    .item-subtotal { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:var(--brown); margin-bottom:0.8rem; }
+    .btn-remove { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.2s; font-family:'Jost',sans-serif; }
+    .btn-remove:hover { color:var(--danger); }
+
+    /* ORDER SUMMARY */
+    .order-summary { background:var(--warm-white); border:1px solid var(--beige); padding:2rem; align-self:start; position:sticky; top:90px; }
+    .summary-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:400; color:var(--brown); margin-bottom:1.5rem; padding-bottom:0.8rem; border-bottom:1px solid var(--beige); }
+    .summary-row { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.8rem; }
+    .summary-row.total { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--brown); font-weight:600; border-top:1px solid var(--beige); padding-top:1rem; margin-top:0.5rem; }
+    .summary-row.total span:last-child { color:var(--gold-dark); }
+    .checkout-btn { width:100%; margin-top:1.5rem; background:var(--gold); color:#fff; border:none; padding:1rem; font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; font-family:'Jost',sans-serif; font-weight:500; transition:background 0.3s; }
+    .checkout-btn:hover { background:var(--gold-dark); }
+    .continue-btn { width:100%; margin-top:0.8rem; background:transparent; color:var(--brown); border:1.5px solid var(--beige); padding:0.85rem; font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; font-family:'Jost',sans-serif; transition:all 0.3s; text-align:center; text-decoration:none; display:block; }
+    .continue-btn:hover { border-color:var(--gold); color:var(--gold-dark); }
+
+    /* CHECKOUT FORM */
+    .checkout-section { display:none; margin-top:3rem; background:var(--warm-white); border:1px solid var(--beige); padding:2.5rem; }
+    .checkout-section.show { display:block; }
+    .checkout-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--brown); margin-bottom:2rem; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .form-group { display:flex; flex-direction:column; gap:0.4rem; }
+    .form-group.full { grid-column:1/-1; }
+    .form-group label { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); }
+    .form-group input, .form-group select, .form-group textarea {
+      padding:0.8rem 1rem; border:1px solid var(--beige); background:var(--ivory);
+      font-family:'Jost',sans-serif; font-size:0.85rem; color:var(--charcoal); outline:none;
+      transition:border-color 0.25s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); }
+    .payment-options { display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.5rem; }
+    .pay-opt { display:flex; align-items:center; gap:0.5rem; font-size:0.83rem; cursor:pointer; }
+    .pay-opt input { accent-color:var(--gold); }
+    .place-order-btn { margin-top:2rem; background:var(--gold); color:#fff; border:none; padding:1rem 3rem; font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; font-family:'Jost',sans-serif; font-weight:500; transition:background 0.3s; }
+    .place-order-btn:hover { background:var(--gold-dark); }
+
+    /* SUCCESS */
+    .success-msg { display:none; text-align:center; padding:5rem 2rem; }
+    .success-msg.show { display:block; }
+    .success-icon { font-size:4rem; margin-bottom:1.5rem; }
+    .success-msg h2 { font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300; color:var(--brown); margin-bottom:1rem; }
+    .success-msg p { color:var(--text-muted); font-size:0.92rem; line-height:1.8; margin-bottom:2rem; }
+    .order-id { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-style:italic; color:var(--gold-dark); margin-bottom:2rem; }
+
+    footer { background:var(--charcoal); color:rgba(249,245,239,0.35); padding:2rem 5vw; display:flex; justify-content:space-between; font-size:0.75rem; flex-wrap:wrap; gap:1rem; }
+    footer a { color:var(--gold-light); text-decoration:none; }
+
+    @media(max-width:860px){
+      .cart-layout { grid-template-columns:1fr; }
+      .order-summary { position:static; }
+    }
+    @media(max-width:600px){
+      .nav-links,.nav-icons { display:none; }
+      .cart-item { grid-template-columns:80px 1fr; }
+      .cart-item-right { grid-column:1/-1; display:flex; justify-content:space-between; align-items:center; }
+      .form-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Melody<span>Nest</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="cart.html" class="active">Cart</a></li>
+    <li><a href="wishlist.html">Wishlist</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-icons">
+    <a href="cart.html" class="nav-icon">🛒 <span class="badge" id="cartBadge">0</span></a>
+    <a href="wishlist.html" class="nav-icon">♡ <span class="badge" id="wishBadge">0</span></a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p>Your Selection</p>
+  <h1>Shopping <em>Cart</em></h1>
+</div>
+
+<div class="cart-main">
+
+  <!-- SUCCESS MESSAGE -->
+  <div class="success-msg" id="successMsg">
+    <div class="success-icon">🎵</div>
+    <h2>Order Placed Successfully!</h2>
+    <p>Thank you for your purchase. Your instruments will be carefully packaged and dispatched within 2–3 business days. An email confirmation has been sent to you.</p>
+    <p class="order-id" id="orderId"></p>
+    <a href="products.html" class="btn-primary">Continue Shopping</a>
+  </div>
+
+  <!-- EMPTY CART -->
+  <div class="empty-cart" id="emptyCart" style="display:none">
+    <div class="icon">🛒</div>
+    <h2>Your cart is empty</h2>
+    <p>Discover our collection of premium instruments and add your favourites.</p>
+    <a href="products.html" class="btn-primary">Shop Now</a>
+  </div>
+
+  <!-- CART CONTENT -->
+  <div id="cartContent">
+    <div class="cart-layout">
+      <div class="cart-items-section">
+        <p class="cart-section-title">Cart Items</p>
+        <div id="cartItemsList"></div>
+        <a href="products.html" class="btn-outline" style="margin-top:1rem;display:inline-block">← Continue Shopping</a>
+      </div>
+      <div class="order-summary">
+        <h3 class="summary-title">Order Summary</h3>
+        <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+        <div class="summary-row"><span>Shipping</span><span id="shipping">₹0</span></div>
+        <div class="summary-row"><span>Tax (5%)</span><span id="taxAmt">₹0</span></div>
+        <div class="summary-row total"><span>Total</span><span id="totalAmt">₹0</span></div>
+        <button class="checkout-btn" onclick="showCheckout()">Proceed to Checkout</button>
+        <a href="products.html" class="continue-btn">← Continue Shopping</a>
+      </div>
+    </div>
+
+    <!-- CHECKOUT FORM -->
+    <div class="checkout-section" id="checkoutSection">
+      <h2 class="checkout-title">Checkout Details</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="fullName" placeholder="Arjun Mehta"/>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" id="email" placeholder="arjun@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Phone *</label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210"/>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" id="city" placeholder="Hyderabad"/>
+        </div>
+        <div class="form-group full">
+          <label>Address *</label>
+          <input type="text" id="address" placeholder="123 Music Lane, Banjara Hills"/>
+        </div>
+        <div class="form-group full">
+          <label>Payment Method *</label>
+          <div class="payment-options">
+            <label class="pay-opt"><input type="radio" name="payment" value="upi" checked> UPI / GPay</label>
+            <label class="pay-opt"><input type="radio" name="payment" value="card"> Credit/Debit Card</label>
+            <label class="pay-opt"><input type="radio" name="payment" value="netbanking"> Net Banking</label>
+            <label class="pay-opt"><input type="radio" name="payment" value="cod"> Cash on Delivery</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Special Instructions (optional)</label>
+          <textarea id="notes" rows="3" placeholder="Any special packaging or delivery instructions..."></textarea>
+        </div>
+      </div>
+      <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2025 MelodyNest</span>
+  <a href="index.html">← Back to Home</a>
+</footer>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem('mn_cart') || '[]');
+
+  function updateBadges() {
+    const w = JSON.parse(localStorage.getItem('mn_wishlist') || '[]');
+    document.getElementById('cartBadge').textContent = cart.reduce((a,i)=>a+(i.qty||1),0);
+    document.getElementById('wishBadge').textContent = w.length;
+  }
+
+  function saveCart() {
+    localStorage.setItem('mn_cart', JSON.stringify(cart));
+    updateBadges();
+  }
+
+  function renderCart() {
+    updateBadges();
+    if (!cart.length) {
+      document.getElementById('cartContent').style.display = 'none';
+      document.getElementById('emptyCart').style.display = 'block';
+      return;
+    }
+    document.getElementById('cartContent').style.display = 'block';
+    document.getElementById('emptyCart').style.display = 'none';
+
+    const list = document.getElementById('cartItemsList');
+    list.innerHTML = cart.map((item, idx) => `
+    <div class="cart-item" id="item-${idx}">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}"/>
+      <div class="cart-item-info">
+        <p class="cart-item-cat">${item.cat}</p>
+        <h4 class="cart-item-name">${item.name}</h4>
+        <p class="cart-item-price">₹${item.price.toLocaleString('en-IN')} each</p>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
+          <span class="qty-val">${item.qty || 1}</span>
+          <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+        </div>
+      </div>
+      <div class="cart-item-right">
+        <p class="item-subtotal">₹${((item.qty||1)*item.price).toLocaleString('en-IN')}</p>
+        <button class="btn-remove" onclick="removeItem(${idx})">✕ Remove</button>
+      </div>
+    </div>`).join('');
+
+    updateSummary();
+  }
+
+  function changeQty(idx, delta) {
+    cart[idx].qty = Math.max(1, (cart[idx].qty || 1) + delta);
+    saveCart(); renderCart();
+  }
+  function removeItem(idx) {
+    cart.splice(idx, 1); saveCart(); renderCart();
+  }
+
+  function updateSummary() {
+    const sub = cart.reduce((a,i)=>a+(i.qty||1)*i.price, 0);
+    const shipping = sub > 5000 ? 0 : 299;
+    const tax = Math.round(sub * 0.05);
+    const total = sub + shipping + tax;
+    document.getElementById('subtotal').textContent = '₹' + sub.toLocaleString('en-IN');
+    document.getElementById('shipping').textContent = shipping === 0 ? 'FREE' : '₹' + shipping;
+    document.getElementById('taxAmt').textContent = '₹' + tax.toLocaleString('en-IN');
+    document.getElementById('totalAmt').textContent = '₹' + total.toLocaleString('en-IN');
+  }
+
+  function showCheckout() {
+    const cs = document.getElementById('checkoutSection');
+    cs.classList.add('show');
+    cs.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function placeOrder() {
+    const name = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    if (!name || !email || !phone || !address) {
+      alert('Please fill in all required fields marked with *');
+      return;
+    }
+    const orderId = 'MN-' + Date.now().toString(36).toUpperCase();
+    localStorage.removeItem('mn_cart');
+    cart = [];
+    document.getElementById('cartContent').style.display = 'none';
+    document.getElementById('emptyCart').style.display = 'none';
+    document.getElementById('orderId').textContent = 'Order ID: ' + orderId;
+    document.getElementById('successMsg').classList.add('show');
+    updateBadges();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  renderCart();
+</script>
+</body>
+</html>
