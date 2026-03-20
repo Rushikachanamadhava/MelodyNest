@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MelodyNest – Where Elegance Meets Sound</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #f9f5ef;
+      --ivory: #fdf8f2;
+      --warm-white: #fffdf9;
+      --beige: #e8ddd0;
+      --gold: #b89a6a;
+      --gold-light: #d4b896;
+      --gold-dark: #8a6f45;
+      --brown: #5c4a35;
+      --charcoal: #2c2c2c;
+      --text-muted: #7a6e63;
+      --shadow: rgba(90,70,45,0.12);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Jost', sans-serif; background:var(--ivory); color:var(--charcoal); }
+
+    /* NAV */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      background:rgba(253,248,242,0.95); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--beige);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 5vw; height:72px;
+      transition:box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow:0 2px 24px var(--shadow); }
+    .nav-logo { font-family:'Cormorant Garamond', serif; font-size:1.7rem; font-weight:600; color:var(--brown); letter-spacing:0.04em; text-decoration:none; }
+    .nav-logo span { color:var(--gold); }
+    .nav-links { display:flex; gap:2.2rem; list-style:none; align-items:center; }
+    .nav-links a { text-decoration:none; font-size:0.82rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); font-weight:500; transition:color 0.25s; position:relative; }
+    .nav-links a:hover { color:var(--gold-dark); }
+    .nav-links a.active { color:var(--gold-dark); }
+    .nav-links a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px; background:var(--gold); }
+    .nav-icons { display:flex; gap:1.4rem; align-items:center; }
+    .nav-icon { text-decoration:none; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-weight:500; display:flex; align-items:center; gap:0.4rem; transition:color 0.25s; }
+    .nav-icon:hover { color:var(--gold-dark); }
+    .nav-icon .badge { background:var(--gold); color:#fff; border-radius:50%; width:18px; height:18px; font-size:0.65rem; display:flex; align-items:center; justify-content:center; font-weight:600; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; }
+    .hamburger span { width:24px; height:1.5px; background:var(--charcoal); display:block; transition:0.3s; }
+
+    /* HERO */
+    .hero {
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+      background: linear-gradient(135deg, #f0e8da 0%, #fdf8f2 40%, #e8ddd0 100%);
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background-image: url('https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=1800&q=80');
+      background-size:cover; background-position:center;
+      opacity:0.13;
+    }
+    .hero-content { position:relative; text-align:center; padding:0 2rem; max-width:780px; animation:fadeUp 1s ease both; }
+    .hero-eyebrow { font-family:'Jost', sans-serif; font-size:0.72rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:1.4rem; }
+    .hero-title { font-family:'Cormorant Garamond', serif; font-size:clamp(3.2rem,7vw,6rem); font-weight:300; line-height:1.05; color:var(--brown); margin-bottom:0.5rem; }
+    .hero-title em { font-style:italic; color:var(--gold-dark); }
+    .hero-sub { font-family:'Cormorant Garamond', serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:300; font-style:italic; color:var(--text-muted); margin:1.2rem 0 2.8rem; }
+    .btn-primary {
+      display:inline-block; padding:0.95rem 2.8rem;
+      background:var(--gold); color:#fff;
+      font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:500;
+      text-decoration:none; border:none; cursor:pointer;
+      transition:background 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow:0 4px 20px rgba(184,154,106,0.35);
+    }
+    .btn-primary:hover { background:var(--gold-dark); transform:translateY(-2px); box-shadow:0 8px 28px rgba(184,154,106,0.45); }
+    .btn-outline {
+      display:inline-block; padding:0.9rem 2.4rem;
+      background:transparent; color:var(--brown);
+      font-size:0.78rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:500;
+      text-decoration:none; border:1.5px solid var(--gold); cursor:pointer;
+      transition:all 0.3s;
+    }
+    .btn-outline:hover { background:var(--gold); color:#fff; }
+    .hero-scroll { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); text-align:center; }
+    .hero-scroll span { display:block; font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.6rem; }
+    .scroll-line { width:1px; height:50px; background:linear-gradient(to bottom, var(--gold), transparent); margin:0 auto; animation:scrollAnim 1.8s ease-in-out infinite; }
+
+    /* BAND */
+    .band {
+      background:var(--brown); color:var(--cream);
+      padding:1.2rem 5vw; display:flex; align-items:center; justify-content:center;
+      gap:4rem; flex-wrap:wrap;
+    }
+    .band-item { display:flex; align-items:center; gap:0.8rem; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; }
+    .band-item svg { opacity:0.7; }
+
+    /* SECTIONS */
+    section { padding:6rem 5vw; }
+    .section-label { font-size:0.7rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+    .section-title { font-family:'Cormorant Garamond', serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--brown); line-height:1.2; }
+    .section-title em { font-style:italic; }
+
+    /* FEATURED */
+    .featured { background:var(--cream); }
+    .featured-header { text-align:center; margin-bottom:3.5rem; }
+    .featured-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:2rem; }
+    .product-card {
+      background:var(--warm-white); border:1px solid var(--beige);
+      transition:box-shadow 0.3s, transform 0.3s;
+      overflow:hidden;
+    }
+    .product-card:hover { box-shadow:0 12px 40px var(--shadow); transform:translateY(-4px); }
+    .card-img-wrap { position:relative; overflow:hidden; aspect-ratio:4/3; }
+    .card-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease; }
+    .product-card:hover .card-img-wrap img { transform:scale(1.05); }
+    .card-badge { position:absolute; top:12px; left:12px; background:var(--gold); color:#fff; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; padding:0.3rem 0.7rem; }
+    .card-body { padding:1.4rem 1.6rem 1.6rem; }
+    .card-category { font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem; }
+    .card-name { font-family:'Cormorant Garamond', serif; font-size:1.25rem; font-weight:400; color:var(--brown); margin-bottom:0.5rem; }
+    .card-desc { font-size:0.82rem; color:var(--text-muted); line-height:1.6; margin-bottom:0.9rem; }
+    .card-stars { color:var(--gold); font-size:0.8rem; letter-spacing:0.08em; margin-bottom:0.8rem; }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; }
+    .card-price { font-family:'Cormorant Garamond', serif; font-size:1.5rem; font-weight:600; color:var(--brown); }
+    .card-btns { display:flex; gap:0.5rem; }
+    .btn-cart {
+      background:var(--gold); color:#fff; border:none; padding:0.5rem 1.1rem;
+      font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer;
+      transition:background 0.25s; font-family:'Jost', sans-serif; font-weight:500;
+    }
+    .btn-cart:hover { background:var(--gold-dark); }
+    .btn-wish {
+      background:transparent; color:var(--gold); border:1.5px solid var(--gold-light);
+      padding:0.5rem 0.8rem; font-size:0.85rem; cursor:pointer; transition:all 0.25s; line-height:1;
+    }
+    .btn-wish:hover { background:var(--gold); color:#fff; border-color:var(--gold); }
+
+    /* ABOUT STRIP */
+    .about-strip {
+      background:var(--ivory);
+      display:grid; grid-template-columns:1fr 1fr; gap:0; min-height:520px;
+    }
+    .about-img { overflow:hidden; }
+    .about-img img { width:100%; height:100%; object-fit:cover; display:block; }
+    .about-content { display:flex; flex-direction:column; justify-content:center; padding:5rem 6vw; }
+    .about-content .section-label { margin-bottom:0.8rem; }
+    .about-content .section-title { margin-bottom:1.5rem; }
+    .about-content p { font-size:0.92rem; color:var(--text-muted); line-height:1.9; margin-bottom:2rem; }
+
+    /* WHY US */
+    .why { background:var(--warm-white); text-align:center; }
+    .why-header { margin-bottom:3.5rem; }
+    .why-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:2rem; }
+    .why-card { padding:2.5rem 1.8rem; border:1px solid var(--beige); transition:box-shadow 0.3s; }
+    .why-card:hover { box-shadow:0 8px 30px var(--shadow); }
+    .why-icon { font-size:2rem; margin-bottom:1.2rem; }
+    .why-title { font-family:'Cormorant Garamond', serif; font-size:1.2rem; font-weight:600; color:var(--brown); margin-bottom:0.7rem; }
+    .why-desc { font-size:0.82rem; color:var(--text-muted); line-height:1.7; }
+
+    /* TESTIMONIALS */
+    .testimonials { background:var(--brown); color:var(--cream); text-align:center; }
+    .testimonials .section-label { color:var(--gold-light); }
+    .testimonials .section-title { color:var(--cream); margin-bottom:3rem; }
+    .testi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:2rem; }
+    .testi-card { background:rgba(255,255,255,0.07); padding:2rem; border:1px solid rgba(255,255,255,0.12); text-align:left; }
+    .testi-stars { color:var(--gold-light); margin-bottom:1rem; font-size:0.85rem; }
+    .testi-text { font-family:'Cormorant Garamond', serif; font-size:1.05rem; font-style:italic; line-height:1.8; color:rgba(249,245,239,0.9); margin-bottom:1.4rem; }
+    .testi-author { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-light); }
+
+    /* CTA */
+    .cta-section {
+      background:linear-gradient(135deg, var(--beige) 0%, var(--cream) 100%);
+      text-align:center; padding:6rem 2rem;
+    }
+    .cta-section .section-title { margin-bottom:1rem; }
+    .cta-section p { color:var(--text-muted); font-size:0.92rem; margin-bottom:2.5rem; }
+    .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    /* FOOTER */
+    footer { background:var(--charcoal); color:rgba(249,245,239,0.7); padding:4rem 5vw 2rem; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+    .footer-brand .nav-logo { color:var(--cream); display:block; margin-bottom:1rem; }
+    .footer-brand p { font-size:0.82rem; line-height:1.8; color:rgba(249,245,239,0.55); }
+    .footer-col h4 { font-family:'Cormorant Garamond', serif; font-size:1rem; font-weight:600; color:var(--cream); letter-spacing:0.08em; margin-bottom:1.2rem; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:0.6rem; }
+    .footer-col ul li a { text-decoration:none; font-size:0.8rem; color:rgba(249,245,239,0.55); transition:color 0.25s; }
+    .footer-col ul li a:hover { color:var(--gold-light); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,0.1); padding-top:1.5rem; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:rgba(249,245,239,0.35); flex-wrap:wrap; gap:1rem; }
+
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:2rem; right:2rem; z-index:999;
+      background:var(--brown); color:var(--cream); padding:1rem 1.6rem;
+      font-size:0.82rem; letter-spacing:0.05em; box-shadow:0 8px 30px rgba(0,0,0,0.2);
+      transform:translateX(120%); transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      border-left:3px solid var(--gold);
+    }
+    .toast.show { transform:translateX(0); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes scrollAnim { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:0.3;transform:scaleY(0.5)} }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .about-strip { grid-template-columns:1fr; }
+      .about-img { height:320px; }
+      .footer-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:640px){
+      .nav-links,.nav-icons { display:none; }
+      .hamburger { display:flex; }
+      .footer-grid { grid-template-columns:1fr; }
+      .band { gap:1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">Melody<span>Nest</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li><a href="wishlist.html">Wishlist</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-icons">
+    <a href="cart.html" class="nav-icon">🛒 <span class="badge" id="cartBadge">0</span></a>
+    <a href="wishlist.html" class="nav-icon">♡ <span class="badge" id="wishBadge">0</span></a>
+  </div>
+  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Curated Musical Excellence</p>
+    <h1 class="hero-title">Where <em>Elegance</em><br>Meets Sound</h1>
+    <p class="hero-sub">Discover instruments that inspire — crafted for musicians who appreciate the finest.</p>
+    <a href="products.html" class="btn-primary">Explore Collection</a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- BAND -->
+<div class="band">
+  <div class="band-item"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Free Shipping over ₹5,000</div>
+  <div class="band-item"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Expert Advice</div>
+  <div class="band-item"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Lifetime Support</div>
+  <div class="band-item"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Premium Guarantee</div>
+</div>
+
+<!-- FEATURED -->
+<section class="featured">
+  <div class="featured-header">
+    <p class="section-label">Our Collection</p>
+    <h2 class="section-title">Featured <em>Instruments</em></h2>
+  </div>
+  <div class="featured-grid" id="featuredGrid"></div>
+  <div style="text-align:center;margin-top:3rem">
+    <a href="products.html" class="btn-outline">View All Instruments</a>
+  </div>
+</section>
+
+<!-- ABOUT STRIP -->
+<div class="about-strip">
+  <div class="about-img">
+    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80" alt="Music studio"/>
+  </div>
+  <div class="about-content">
+    <p class="section-label">Our Story</p>
+    <h2 class="section-title">Crafted for<br><em>True Musicians</em></h2>
+    <p>MelodyNest was born from a deep love of music and a desire to connect passionate musicians with instruments of extraordinary quality. Every piece in our collection is handpicked for its tonal beauty, craftsmanship, and artistic merit.</p>
+    <a href="products.html" class="btn-primary">Discover More</a>
+  </div>
+</div>
+
+<!-- WHY US -->
+<section class="why">
+  <div class="why-header">
+    <p class="section-label">Why MelodyNest</p>
+    <h2 class="section-title">An Experience <em>Beyond the Ordinary</em></h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">🎼</div>
+      <h3 class="why-title">Curated Selection</h3>
+      <p class="why-desc">Every instrument is personally reviewed by our team of professional musicians for tone, build quality, and artistry.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🛡️</div>
+      <h3 class="why-title">Authentic Guarantee</h3>
+      <p class="why-desc">100% authentic instruments from world-renowned luthiers and manufacturers, backed by our quality promise.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🚚</div>
+      <h3 class="why-title">Insured Delivery</h3>
+      <p class="why-desc">Each instrument is carefully packaged and shipped with full insurance for total peace of mind.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🎵</div>
+      <h3 class="why-title">Expert Guidance</h3>
+      <p class="why-desc">Our team of musicians is here to help you choose the perfect instrument for your level and musical journey.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <p class="section-label">What Musicians Say</p>
+  <h2 class="section-title">Voices of <em>Inspiration</em></h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"The Martin guitar I received is absolutely breathtaking. The tone, the finish, the craftsmanship — MelodyNest has set a new standard for me."</p>
+      <span class="testi-author">— Arjun R., Classical Guitarist</span>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I was amazed by the packaging and the care taken with my violin. It arrived in perfect condition and exceeded all my expectations."</p>
+      <span class="testi-author">— Priya S., Violinist</span>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Shopping here felt like visiting a fine music boutique. The entire experience — from browsing to delivery — was simply luxurious."</p>
+      <span class="testi-author">— Mihir D., Jazz Musician</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <p class="section-label">Begin Your Journey</p>
+  <h2 class="section-title">Find Your <em>Perfect Instrument</em></h2>
+  <p>Explore our full collection of premium instruments, from classical strings to modern electric.</p>
+  <div class="cta-btns">
+    <a href="products.html" class="btn-primary">Shop Now</a>
+    <a href="contact.html" class="btn-outline">Get Advice</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">Melody<span style="color:var(--gold-light)">Nest</span></a>
+      <p>A curated sanctuary for musicians who seek instruments of extraordinary beauty and resonance.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="products.html">String Instruments</a></li>
+        <li><a href="products.html">Keyboards</a></li>
+        <li><a href="products.html">Percussion</a></li>
+        <li><a href="products.html">Wind Instruments</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:hello@melodynest.com">hello@melodynest.com</a></li>
+        <li><a href="tel:+918008001234">+91 800 800 1234</a></li>
+        <li><a href="#">12 Music Lane, Hyderabad</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 MelodyNest. All rights reserved.</span>
+    <span>Crafted with ♪ for musicians</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // --- Nav scroll effect ---
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // --- Badge counts ---
+  function updateBadges() {
+    const cart = JSON.parse(localStorage.getItem('mn_cart') || '[]');
+    const wish = JSON.parse(localStorage.getItem('mn_wishlist') || '[]');
+    document.getElementById('cartBadge').textContent = cart.reduce((a,i)=>a+(i.qty||1),0);
+    document.getElementById('wishBadge').textContent = wish.length;
+  }
+  updateBadges();
+
+  // --- Products data ---
+  const products = [
+    { id:1, name:'Classic Acoustic Guitar', cat:'String', desc:'Sitka spruce top with rosewood back. Rich, warm projection.', price:18500, rating:5, badge:'Bestseller', img:'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&q=80' },
+    { id:2, name:'Electric Guitar', cat:'String', desc:'Solid alder body, maple neck. Brilliant sustain and versatility.', price:24000, rating:5, badge:'New', img:'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?w=600&q=80' },
+    { id:3, name:'Grand Keyboard Piano', cat:'Keyboard', desc:'88 fully weighted keys. Studio-grade polyphony and tone.', price:42000, rating:4, badge:'Premium', img:'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=600&q=80' },
+    { id:4, name:'Concert Violin', cat:'String', desc:'Spruce and maple construction, warm resonant tone.', price:15000, rating:5, badge:null, img:'https://images.unsplash.com/photo-1612225330812-01a9c6b355ec?w=600&q=80' },
+  ];
+
+  // --- Featured grid ---
+  const grid = document.getElementById('featuredGrid');
+  products.forEach(p => {
+    grid.innerHTML += `
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ''}
+      </div>
+      <div class="card-body">
+        <p class="card-category">${p.cat}</p>
+        <h3 class="card-name">${p.name}</h3>
+        <p class="card-desc">${p.desc}</p>
+        <div class="card-stars">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}</div>
+        <div class="card-footer">
+          <span class="card-price">₹${p.price.toLocaleString('en-IN')}</span>
+          <div class="card-btns">
+            <button class="btn-cart" onclick="addToCart(${p.id})">Add to Cart</button>
+            <button class="btn-wish" onclick="addToWish(${p.id})" title="Add to Wishlist">♡</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  function addToCart(id) {
+    const cart = JSON.parse(localStorage.getItem('mn_cart') || '[]');
+    const idx = cart.findIndex(i=>i.id===id);
+    if(idx>=0) cart[idx].qty = (cart[idx].qty||1)+1;
+    else { const p=products.find(i=>i.id===id); cart.push({...p,qty:1}); }
+    localStorage.setItem('mn_cart', JSON.stringify(cart));
+    showToast('Added to cart ✓');
+    updateBadges();
+  }
+  function addToWish(id) {
+    const wish = JSON.parse(localStorage.getItem('mn_wishlist') || '[]');
+    if(wish.find(i=>i.id===id)){ showToast('Already in wishlist'); return; }
+    const p=products.find(i=>i.id===id);
+    wish.push(p);
+    localStorage.setItem('mn_wishlist', JSON.stringify(wish));
+    showToast('Added to wishlist ♡');
+    updateBadges();
+  }
+  function showToast(msg) {
+    const t=document.getElementById('toast'); t.textContent=msg;
+    t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
+  }
+  function toggleMenu(){}
+</script>
+</body>
+</html>
