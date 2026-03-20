@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact – MelodyNest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream:#f9f5ef; --ivory:#fdf8f2; --warm-white:#fffdf9;
+      --beige:#e8ddd0; --gold:#b89a6a; --gold-light:#d4b896;
+      --gold-dark:#8a6f45; --brown:#5c4a35; --charcoal:#2c2c2c;
+      --text-muted:#7a6e63; --shadow:rgba(90,70,45,0.12);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Jost',sans-serif; background:var(--ivory); color:var(--charcoal); }
+
+    nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(253,248,242,0.97); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--beige);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 5vw; height:72px; box-shadow:0 2px 16px var(--shadow);
+    }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; color:var(--brown); text-decoration:none; }
+    .nav-logo span { color:var(--gold); }
+    .nav-links { display:flex; gap:2.2rem; list-style:none; }
+    .nav-links a { text-decoration:none; font-size:0.82rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); font-weight:500; transition:color 0.25s; }
+    .nav-links a:hover,.nav-links a.active { color:var(--gold-dark); }
+    .nav-icons { display:flex; gap:1.4rem; }
+    .nav-icon { text-decoration:none; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-weight:500; display:flex; align-items:center; gap:0.4rem; transition:color 0.25s; }
+    .nav-icon:hover { color:var(--gold-dark); }
+    .badge { background:var(--gold); color:#fff; border-radius:50%; width:18px; height:18px; font-size:0.65rem; display:flex; align-items:center; justify-content:center; font-weight:600; }
+
+    .page-hero {
+      background:linear-gradient(135deg,var(--beige) 0%,var(--cream) 60%);
+      padding:5rem 5vw 4rem; text-align:center; border-bottom:1px solid var(--beige);
+      position:relative; overflow:hidden;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0;
+      background:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1400&q=80') center/cover;
+      opacity:0.07;
+    }
+    .page-hero p { font-size:0.7rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:0.8rem; position:relative; }
+    .page-hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--brown); position:relative; }
+    .page-hero h1 em { font-style:italic; }
+
+    .contact-main { max-width:1200px; margin:0 auto; padding:5rem 5vw; }
+
+    /* INFO + FORM LAYOUT */
+    .contact-layout { display:grid; grid-template-columns:1fr 1.5fr; gap:5rem; margin-bottom:5rem; }
+
+    /* INFO SIDE */
+    .contact-info {}
+    .info-label { font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:0.8rem; }
+    .info-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:var(--brown); line-height:1.3; margin-bottom:1.5rem; }
+    .info-title em { font-style:italic; }
+    .info-text { font-size:0.88rem; color:var(--text-muted); line-height:1.9; margin-bottom:2.5rem; }
+    .info-cards { display:flex; flex-direction:column; gap:1.2rem; }
+    .info-card { display:flex; align-items:flex-start; gap:1.2rem; padding:1.4rem; background:var(--warm-white); border:1px solid var(--beige); transition:box-shadow 0.25s; }
+    .info-card:hover { box-shadow:0 6px 24px var(--shadow); }
+    .info-card-icon { font-size:1.4rem; flex-shrink:0; margin-top:0.1rem; }
+    .info-card h4 { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem; }
+    .info-card p { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+    .info-card a { color:var(--text-muted); text-decoration:none; transition:color 0.2s; }
+    .info-card a:hover { color:var(--gold-dark); }
+
+    /* CONTACT FORM */
+    .contact-form-section {}
+    .form-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--brown); margin-bottom:2rem; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .form-group { display:flex; flex-direction:column; gap:0.4rem; }
+    .form-group.full { grid-column:1/-1; }
+    .form-group label { font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); }
+    .form-group input, .form-group select, .form-group textarea {
+      padding:0.85rem 1rem; border:1px solid var(--beige); background:var(--ivory);
+      font-family:'Jost',sans-serif; font-size:0.85rem; color:var(--charcoal); outline:none;
+      transition:border-color 0.25s,background 0.25s; resize:vertical;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color:var(--gold); background:var(--warm-white);
+    }
+    .submit-btn { margin-top:0.5rem; background:var(--gold); color:#fff; border:none; padding:1rem 2.5rem; font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; font-family:'Jost',sans-serif; font-weight:500; transition:background 0.3s,transform 0.2s; }
+    .submit-btn:hover { background:var(--gold-dark); transform:translateY(-1px); }
+    .form-success { display:none; text-align:center; padding:2.5rem; border:1px solid var(--beige); background:var(--warm-white); }
+    .form-success.show { display:block; }
+    .form-success .s-icon { font-size:2.5rem; margin-bottom:1rem; }
+    .form-success h3 { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; color:var(--brown); margin-bottom:0.5rem; }
+    .form-success p { font-size:0.88rem; color:var(--text-muted); }
+
+    /* DIVIDER */
+    .divider { border:none; border-top:1px solid var(--beige); margin:3rem 0; }
+
+    /* FEEDBACK FORM */
+    .feedback-section { background:var(--brown); color:var(--cream); padding:5rem; margin:0 -5vw; }
+    .feedback-inner { max-width:700px; margin:0 auto; }
+    .feedback-label { font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-light); margin-bottom:0.8rem; }
+    .feedback-title { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; line-height:1.3; margin-bottom:1.5rem; }
+    .feedback-title em { font-style:italic; }
+    .fb-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .fb-group { display:flex; flex-direction:column; gap:0.4rem; }
+    .fb-group.full { grid-column:1/-1; }
+    .fb-group label { font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-light); }
+    .fb-group input, .fb-group textarea, .fb-group select {
+      padding:0.85rem 1rem; border:1px solid rgba(255,255,255,0.15);
+      background:rgba(255,255,255,0.07); color:var(--cream);
+      font-family:'Jost',sans-serif; font-size:0.85rem; outline:none;
+      transition:border-color 0.25s; resize:vertical;
+    }
+    .fb-group input::placeholder, .fb-group textarea::placeholder { color:rgba(249,245,239,0.4); }
+    .fb-group input:focus, .fb-group textarea:focus, .fb-group select:focus { border-color:var(--gold-light); }
+    .fb-group select option { background:var(--brown); color:var(--cream); }
+    /* STAR RATING */
+    .star-rating { display:flex; gap:0.4rem; margin-top:0.2rem; }
+    .star-rating span { font-size:1.8rem; cursor:pointer; color:rgba(255,255,255,0.3); transition:color 0.2s; }
+    .star-rating span.active, .star-rating span:hover { color:var(--gold-light); }
+    .fb-submit { margin-top:1rem; background:var(--gold); color:#fff; border:none; padding:1rem 2.5rem; font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; font-family:'Jost',sans-serif; font-weight:500; transition:background 0.3s; }
+    .fb-submit:hover { background:var(--gold-dark); }
+    .fb-success { display:none; text-align:center; padding:2rem; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); }
+    .fb-success.show { display:block; }
+    .fb-success h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:300; margin-bottom:0.5rem; }
+    .fb-success p { font-size:0.85rem; color:rgba(249,245,239,0.7); }
+
+    footer { background:var(--charcoal); color:rgba(249,245,239,0.35); padding:2rem 5vw; display:flex; justify-content:space-between; font-size:0.75rem; flex-wrap:wrap; gap:1rem; }
+    footer a { color:var(--gold-light); text-decoration:none; }
+
+    @media(max-width:860px){ .contact-layout { grid-template-columns:1fr; gap:2.5rem; } .feedback-section { padding:3.5rem 5vw; } }
+    @media(max-width:600px){ .nav-links,.nav-icons { display:none; } .form-grid,.fb-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Melody<span>Nest</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li><a href="wishlist.html">Wishlist</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="nav-icons">
+    <a href="cart.html" class="nav-icon">🛒 <span class="badge" id="cartBadge">0</span></a>
+    <a href="wishlist.html" class="nav-icon">♡ <span class="badge" id="wishBadge">0</span></a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p>Get in Touch</p>
+  <h1>Contact <em>Us</em></h1>
+</div>
+
+<div class="contact-main">
+  <div class="contact-layout">
+
+    <!-- INFO -->
+    <div class="contact-info">
+      <p class="info-label">Reach Out</p>
+      <h2 class="info-title">We'd Love to<br><em>Hear from You</em></h2>
+      <p class="info-text">Whether you have questions about an instrument, need expert guidance on choosing the right piece, or want to learn more about our curated collection — our team is here for you.</p>
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-card-icon">✉️</div>
+          <div>
+            <h4>Email Us</h4>
+            <p><a href="mailto:hello@melodynest.com">hello@melodynest.com</a><br><a href="mailto:support@melodynest.com">support@melodynest.com</a></p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📞</div>
+          <div>
+            <h4>Call Us</h4>
+            <p><a href="tel:+918008001234">+91 800 800 1234</a><br>Mon–Sat, 10am – 7pm IST</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📍</div>
+          <div>
+            <h4>Visit Us</h4>
+            <p>12 Music Lane, Banjara Hills<br>Hyderabad, Telangana 500034</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🕐</div>
+          <div>
+            <h4>Store Hours</h4>
+            <p>Monday – Saturday: 10am – 8pm<br>Sunday: 11am – 6pm</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT FORM -->
+    <div class="contact-form-section">
+      <h2 class="form-title">Send a Message</h2>
+      <div id="contactFormWrap">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>First Name *</label>
+            <input type="text" id="cfirst" placeholder="Arjun"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input type="text" id="clast" placeholder="Mehta"/>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="cemail" placeholder="arjun@email.com"/>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="cphone" placeholder="+91 98765 43210"/>
+          </div>
+          <div class="form-group full">
+            <label>Subject *</label>
+            <select id="csubject">
+              <option value="">Select a subject…</option>
+              <option>Product Enquiry</option>
+              <option>Order Support</option>
+              <option>Expert Advice</option>
+              <option>Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Message *</label>
+            <textarea id="cmessage" rows="5" placeholder="Tell us how we can help you…"></textarea>
+          </div>
+        </div>
+        <button class="submit-btn" onclick="submitContact()" style="margin-top:1.5rem">Send Message</button>
+      </div>
+      <div class="form-success" id="contactSuccess">
+        <div class="s-icon">🎵</div>
+        <h3>Message Received!</h3>
+        <p>Thank you for reaching out. Our team will respond within 24 hours.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FEEDBACK SECTION -->
+<div class="feedback-section">
+  <div class="feedback-inner">
+    <p class="feedback-label">Share Your Thoughts</p>
+    <h2 class="feedback-title">Your <em>Feedback</em><br>Inspires Us</h2>
+    <div id="feedbackFormWrap">
+      <div class="fb-grid">
+        <div class="fb-group">
+          <label>Your Name *</label>
+          <input type="text" id="fbname" placeholder="Priya Sharma"/>
+        </div>
+        <div class="fb-group">
+          <label>Email *</label>
+          <input type="email" id="fbemail" placeholder="priya@email.com"/>
+        </div>
+        <div class="fb-group full">
+          <label>How would you rate us?</label>
+          <div class="star-rating" id="starRating">
+            <span data-v="1" onclick="setRating(1)">★</span>
+            <span data-v="2" onclick="setRating(2)">★</span>
+            <span data-v="3" onclick="setRating(3)">★</span>
+            <span data-v="4" onclick="setRating(4)">★</span>
+            <span data-v="5" onclick="setRating(5)">★</span>
+          </div>
+        </div>
+        <div class="fb-group full">
+          <label>Category</label>
+          <select id="fbcat">
+            <option>Overall Experience</option>
+            <option>Product Quality</option>
+            <option>Website Usability</option>
+            <option>Delivery & Packaging</option>
+            <option>Customer Support</option>
+          </select>
+        </div>
+        <div class="fb-group full">
+          <label>Your Feedback *</label>
+          <textarea id="fbmsg" rows="4" placeholder="Share your experience with MelodyNest…"></textarea>
+        </div>
+      </div>
+      <button class="fb-submit" onclick="submitFeedback()">Submit Feedback</button>
+    </div>
+    <div class="fb-success" id="feedbackSuccess">
+      <h3>Thank You for Your Feedback! ♪</h3>
+      <p>Your experience matters to us and helps us create an even better musical journey for everyone.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2025 MelodyNest. All rights reserved.</span>
+  <a href="index.html">← Back to Home</a>
+</footer>
+
+<script>
+  function updateBadges() {
+    const cart = JSON.parse(localStorage.getItem('mn_cart') || '[]');
+    const wish = JSON.parse(localStorage.getItem('mn_wishlist') || '[]');
+    document.getElementById('cartBadge').textContent = cart.reduce((a,i)=>a+(i.qty||1),0);
+    document.getElementById('wishBadge').textContent = wish.length;
+  }
+  updateBadges();
+
+  function submitContact() {
+    const first = document.getElementById('cfirst').value.trim();
+    const last = document.getElementById('clast').value.trim();
+    const email = document.getElementById('cemail').value.trim();
+    const subject = document.getElementById('csubject').value;
+    const msg = document.getElementById('cmessage').value.trim();
+    if (!first || !last || !email || !subject || !msg) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    document.getElementById('contactFormWrap').style.display = 'none';
+    document.getElementById('contactSuccess').classList.add('show');
+  }
+
+  let selectedRating = 0;
+  function setRating(val) {
+    selectedRating = val;
+    document.querySelectorAll('#starRating span').forEach((s, i) => {
+      s.classList.toggle('active', i < val);
+    });
+  }
+
+  function submitFeedback() {
+    const name = document.getElementById('fbname').value.trim();
+    const email = document.getElementById('fbemail').value.trim();
+    const msg = document.getElementById('fbmsg').value.trim();
+    if (!name || !email || !msg) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    document.getElementById('feedbackFormWrap').style.display = 'none';
+    document.getElementById('feedbackSuccess').classList.add('show');
+  }
+</script>
+</body>
+</html>
